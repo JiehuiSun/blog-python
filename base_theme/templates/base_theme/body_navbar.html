@@ -1,0 +1,71 @@
+{% load base_theme_filter %}
+<nav class="navbar is-dark is-large">
+    <div id="specialShadow" class="bd-special-shadow" style="opacity: 0; transform: scaleY(1);"></div>
+    <div class="container">
+        <div class="navbar-brand">
+            <!-- 网站logo -->
+            {% if config.v2_iconbar_config.left.logo %}
+                <a href="/" class="navbar-item">
+                    {{ config.v2_iconbar_config.left.logo|get_img }}
+                </a>
+            {% endif %}
+            {% if config.v2_iconbar_config.left.blog_name %}
+                <a href="/" class="navbar-item">
+                    {% if config.v2_iconbar_config.left.blog_name|type == 'str' %}
+                        <span>{{ config.v2_iconbar_config.left.blog_name }}</span>
+                    {% else %}
+                        <!-- 这里代码提示会报错，但其实没错！！-->
+                        <span {% for k,v in config.v2_iconbar_config.left.blog_name.attrs.items %}{{ k }}='{{ v }}'{% endfor %}>
+                        {{ config.v2_iconbar_config.left.blog_name.text }}</span>
+                    {% endif %}
+                </a>
+            {% endif %}
+            <!-- 在手机上显示的菜单图标 -->
+            <!--<a id="navbarBurger" role="button" class="navbar-burger" data-target="topMenu" aria-label="menu" aria-expanded="false">-->
+
+            <span id="navbarBurger" class="navbar-burger " data-target="topMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+
+            </span>
+        </div>
+        <!-- 其他item -->
+        <div id="headLink" class="navbar-menu">
+            <div class="navbar-end">
+                {% for item in config.v2_iconbar_config.right %}
+                    <a class="navbar-item" href="{{ item.url }}" target="_blank">
+                        {{ item.img|get_img }}
+                        <span>{{ item.name }}</span>
+                    </a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+<nav id='topMenuNav' class="navbar  is-hidden-touch has-shadow ">
+    <div class="container ">
+        <div id="topMenu" class="navbar-menu">
+            <div class="navbar-start">
+                {% for m in config.v2_navbar_config.menu|top_menu %}
+                    {{ m.format_html }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    let navbarBurger = document.getElementById('navbarBurger');
+    let topMenuNav = document.getElementById('topMenuNav');
+    navbarBurger.onclick = function () {
+        let menuItem = document.getElementById(navbarBurger.dataset.target);
+        menuItem.classList.toggle('is-active');
+        navbarBurger.classList.toggle('is-active');
+        if (topMenuNav.classList.length === 3)
+            topMenuNav.className = 'navbar has-shadow';
+        else topMenuNav.className = 'navbar has-shadow is-hidden-touch';
+    };
+</script>
