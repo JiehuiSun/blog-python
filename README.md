@@ -107,6 +107,32 @@ ___
     pip install -r requirements.txt
     
     # 创建 deeru/settings_local.py , deeru/urls_local.py ，具体参考文档
+    
+    事例
+    settings_local.py
+    `
+    SECRET_KEY = ")h^6_xi&6du1a##mx)o^9&8m7nyxcm5ul&b7)phb_2v%()h71@"
+    DEBUG = True
+ 
+    ALLOWED_HOSTS = ['*']
+ 
+    CUSTOM_EXPRESSION = []
+ 
+    CUSTOM_APPS = []
+ 
+    CUSTOM_CONFIG_HANDLER = []
+    `
+
+    urls_local.py
+    `
+    from django.contrib import admin
+    from django.urls import path, include
+ 
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('', include('app.urls')),
+    ]
+    `
 ```
 
 初始化
