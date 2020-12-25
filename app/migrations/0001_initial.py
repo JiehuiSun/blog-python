@@ -3,7 +3,8 @@
 import app.ex_fields.fields
 from django.db import migrations, models
 import django.utils.timezone
-from froala_editor.fields import FroalaField
+# from froala_editor.fields import FroalaField
+from DjangoUeditor.models import UEditorField
 
 class Migration(migrations.Migration):
 
@@ -32,7 +33,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(db_index=True, max_length=100, verbose_name='标题')),
                 ('summary', models.CharField(blank=True, editable=False, max_length=200, null=True, verbose_name='摘要')),
                 ('image', models.CharField(blank=True, editable=False, max_length=200, null=True, verbose_name='图片')),
-                ('content', FroalaField(verbose_name='正文')),
+                ('content', UEditorField(verbose_name='正文')),
                 ('created_time', models.DateTimeField(default=django.utils.timezone.now, editable=False, verbose_name='创建时间')),
                 ('modified_time', models.DateTimeField(auto_now=True, verbose_name='修改时间')),
             ],
@@ -141,7 +142,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='标题')),
                 ('url', models.CharField(max_length=100, verbose_name='url')),
-                ('content', FroalaField(verbose_name='正文')),
+                ('content', UEditorField(verbose_name='正文')),
                 ('created_time', models.DateTimeField(default=django.utils.timezone.now, editable=False, verbose_name='创建时间')),
                 ('modified_time', models.DateTimeField(auto_now=True, verbose_name='修改时间')),
             ],

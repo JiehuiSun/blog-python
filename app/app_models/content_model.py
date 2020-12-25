@@ -7,9 +7,12 @@ from app.consts import Comment_Type, CommentStatusChoices
 from app.app_models import get_field
 from tool.html_helper import clean_all_tags, get_safe_comment_html
 
-deeru_rich_editor = settings.DEERU_RICH_EDITOR
 
-DeerURichFiled = get_field(deeru_rich_editor['filed'])
+from DjangoUeditor.models import UEditorField
+
+# deeru_rich_editor = settings.DEERU_RICH_EDITOR
+
+# DeerURichFiled = get_field(deeru_rich_editor['filed'])
 
 __all__ = ['Article', 'ArticleMeta', 'Category', 'ArticleCategory', 'Tag', 'ArticleTag']
 
@@ -23,7 +26,10 @@ class Article(models.Model):
     summary = models.CharField(verbose_name='摘要', max_length=200, null=True, blank=True, editable=False)
     image = models.CharField(verbose_name='图片', max_length=200, null=True, blank=True, editable=False)
 
-    content = DeerURichFiled(verbose_name='正文', null=False, blank=False, **deeru_rich_editor['article_kwargs'])
+    # content = UEditorField(verbose_name='正文', null=False, blank=False, **deeru_rich_editor['article_kwargs'])
+    content=UEditorField(verbose_name='正文', null=False, blank=False, width=600, height=300,
+                         toolbars="full", imagePath="", filePath="", upload_settings={"imageMaxSize":1204000},
+                         settings={},command=None)
 
     created_time = models.DateTimeField(verbose_name="创建时间", default=timezone.now, editable=False)
     modified_time = models.DateTimeField(verbose_name="修改时间", auto_now=True)
@@ -300,7 +306,10 @@ class FlatPage(models.Model):
 
     title = models.CharField(verbose_name='标题', max_length=100, null=False, blank=False)
     url = models.CharField(verbose_name='url', max_length=100, null=False, blank=False)
-    content = DeerURichFiled(verbose_name='正文', null=False, blank=False, **deeru_rich_editor['article_kwargs'])
+    # content = UEditorField(verbose_name='正文', null=False, blank=False, **deeru_rich_editor['article_kwargs'])
+    content=UEditorField(verbose_name='正文', null=False, blank=False, width=600, height=300,
+                         toolbars="full", imagePath="", filePath="", upload_settings={"imageMaxSize":1204000},
+                         settings={},command=None)
 
     created_time = models.DateTimeField(verbose_name="创建时间", default=timezone.now, editable=False)
     modified_time = models.DateTimeField(verbose_name="修改时间", auto_now=True)

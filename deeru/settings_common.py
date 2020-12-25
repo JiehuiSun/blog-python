@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     # 分类排序
     'adminsortable2',
     # 富文本
-    'froala_editor',
+    # 'froala_editor',
+    'DjangoUeditor3',
     # tag输入
     'ktag.apps.KtagConfig',
     # 验证码
@@ -177,33 +178,34 @@ FLATPAGE_URL = '/p/'
 
 # 富文本编辑器配置
 
-DEERU_RICH_EDITOR = {
-    'filed': 'froala_editor.fields.FroalaField',
-    'article_kwargs': {
-        'options': {
-            'height': 350,
-            'toolbarButtons': ['fontFamily', 'fontSize', 'color', '|', 'paragraphFormat',
-                               'paragraphStyle', 'bold', 'italic', 'underline', 'strikeThrough',
-                               '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|',
-                               'emoticons', 'insertLink', 'insertImage', 'insertVideo',
-                               '-', 'insertTable', 'quote', 'insertHR', 'clearFormatting', 'undo',
-                               'redo', 'html',
-                               ],
-        }
-    },
-    'flatpage_kwargs': {
-        'options': {
-            'height': 350,
-            'toolbarButtons': ['fontFamily', 'fontSize', 'color', '|', 'paragraphFormat',
-                               'paragraphStyle', 'bold', 'italic', 'underline', 'strikeThrough',
-                               '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|',
-                               'emoticons', 'insertLink', 'insertImage', 'insertVideo',
-                               '-', 'insertTable', 'quote', 'insertHR', 'clearFormatting', 'undo',
-                               'redo', 'html',
-                               ],
-        }
-    }
-}
+# DEERU_RICH_EDITOR = {
+    # 'filed': 'froala_editor.fields.FroalaField',
+    # # 'filed': 'DjangoUeditor.models.UEditorField',
+    # 'article_kwargs': {
+        # 'options': {
+            # 'height': 350,
+            # 'toolbarButtons': ['fontFamily', 'fontSize', 'color', '|', 'paragraphFormat',
+                               # 'paragraphStyle', 'bold', 'italic', 'underline', 'strikeThrough',
+                               # '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|',
+                               # 'emoticons', 'insertLink', 'insertImage', 'insertVideo',
+                               # '-', 'insertTable', 'quote', 'insertHR', 'clearFormatting', 'undo',
+                               # 'redo', 'html',
+                               # ],
+        # }
+    # },
+    # 'flatpage_kwargs': {
+        # 'options': {
+            # 'height': 350,
+            # 'toolbarButtons': ['fontFamily', 'fontSize', 'color', '|', 'paragraphFormat',
+                               # 'paragraphStyle', 'bold', 'italic', 'underline', 'strikeThrough',
+                               # '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|',
+                               # 'emoticons', 'insertLink', 'insertImage', 'insertVideo',
+                               # '-', 'insertTable', 'quote', 'insertHR', 'clearFormatting', 'undo',
+                               # 'redo', 'html',
+                               # ],
+        # }
+    # }
+# }
 
 # log
 LOG_DIR = ''

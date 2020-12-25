@@ -1,6 +1,84 @@
 {% load base_theme_filter %}
 
+<style>
+    body,div,p{ font-family: 'Microsoft Yahei' ;font-size: 14px;}
+    {% comment %} .box1{ width: 300px; height: 300px; border:10px solid #8bf2f1;margin:30px auto; border-radius: 50%; {% endcomment %}
+        {% comment %} box-shadow: 0px 0px 20px 3px #444 inset; position: relative;} {% endcomment %}
+    .box1{ width: 300px; height: 300px; margin:30px auto; border-radius: 50%;
+        box-shadow: 0px 0px 20px 3px #444 inset; position: relative;}
+    /*原点*/
+    .origin{ width: 20px; height: 20px; border-radius: 50%; background: #ff0000; position: absolute;top: 0;bottom:0;left: 0;right:0;margin: auto;z-index: 11;}
+    /* 指针 */
+    .clock_line{position: absolute;position:absolute;z-index:20;top:148.5px;left:150px;background-color:#000;transform-origin:0 50%;}
+    .hour_line{width:65px;height:4px;border-radius:2px;box-shadow:1px -3px 8px 3px #aaa;}
+    .minute_line{width:87.5px;height:2px;box-shadow:1px -3px 8px 1px #aaa;}
+    .second_line{width:110.5px;height:1px;background-color:#f60;box-shadow:1px -3px 7px 1px #bbb;}
+
+    .dot_box{width: inherit; height: inherit;}
+    /*时钟数*/
+    .dot{ width: 40px; height: 40px; line-height: 40px; text-align: center; font-size: 22px; position: absolute;}
+    .clock-scale{width:146.25px;height:2px;transform-origin:0% 50%;z-index:7;
+      position:absolute;top:149px;left:150px;}
+    .scale-show{ width:12px;height:2px;background-color:#555;float:left;}
+    .scale-hidden{width:183px;height:2px;float:left;}
+    /*日期*/
+    .dateWrap{
+        position:absolute;top:100px;left:0;right: 0;margin: auto;
+    }
+    .weather_info{width:160px;height:28px; line-height:28px;text-align:center;z-index:11;color:#555;
+        font-weight:bold;margin:0 auto 10px; padding-left: 20px;}
+    .date_info{width:160px;height:28px; line-height:28px;text-align:center;z-index:11;color:#555;
+        font-weight:bold;margin:0 auto 10px; margin-top: 30px;}
+    .time_info{ width: 110px; height: 28px; line-height: 28px;text-align:center;z-index:11;color:#555; margin:0 auto;}
+    .time{ width: 35px ;height:35px; float: left; font-size: 22px;}
+    .mh{ width: 1px ;height:35px; float: left;}
+     {# #minute_time{border-left:1px solid #fff;border-right:1px solid #fff;} #}
+</style>
+
 <aside class="column is-hidden-touch is-4 " style="padding-left: 20px">
+    <nav class="panel mpanel " style="">
+        {# <iframe width="500" height="40" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&a=getcode&id=40&icon=1"></iframe> #}
+        {# <iframe width="680" height="260" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&a=getcode&id=13&py=chongqing&icon=1"></iframe> #}
+        {# <iframe width="400" height="100" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&a=getcode&id=35&py=chongqing&site=34&icon=1"></iframe> #}
+        {# <iframe width="800" height="150" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&a=getcode&id=48&num=6&icon=1"></iframe> #}
+        <div class="box1" id="clock">
+            <!-- 原点 -->
+            <div class="origin"></div>
+            <!-- 时钟数 -->
+            <div class="dot_box">
+                <div class="dot">6</div>
+                <div class="dot">5</div>
+                <div class="dot">4</div>
+                <div class="dot">3</div>
+                <div class="dot">2</div>
+                <div class="dot">1</div>
+                <div class="dot">12</div>
+                <div class="dot">11</div>
+                <div class="dot">10</div>
+                <div class="dot">9</div>
+                <div class="dot">8</div>
+                <div class="dot">7</div>
+            </div>
+            <!-- 时、分、秒针 -->
+            <div class="clock_line hour_line" id="hour_line"></div>
+            <div class="clock_line minute_line" id="minute_line"></div>
+            <div class="clock_line second_line" id="second_line"></div>
+            
+            <div class="dateWrap">
+                <div class="weather_info" id="weather_info"></div>
+                <!-- 日期 -->
+                <div class="date_info" id="date_info"></div>
+                <!-- 时间 -->
+                <div class="time_info" >
+                    <div class="time" id="hour_time"></div>
+                    <div class="mh" id="minute_"></div>
+                    <div class="time" id="minute_time"></div>
+                    <div class="mh" id="second_"></div>
+                    <div class="time" id="second_time"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <nav class="panel mpanel " style="">
         <div class="panel-heading">
@@ -79,4 +157,78 @@
 
         })
     });
+</script>
+<script>
+$(function(){
+    var clock = document.getElementById("clock");
+    function initNumXY(){
+        // 1、12个数字的位置设置
+        var radius = 120;//大圆半价
+        var dot_num = 360/$(".dot").length;//每个div对应的弧度数
+        //每一个dot对应的弧度;
+        var ahd = dot_num*Math.PI/180;
+        $(".dot").each(function(index, el) {
+            $(this).css({
+                "left":128+Math.sin((ahd*index))*radius,
+                "top":130+Math.cos((ahd*index))*radius
+            });
+        });
+        // 2、刻钟设置
+        for(var i = 0; i < 60; i++) {
+            clock.innerHTML += "<div class='clock-scale'> " +
+                   "<div class='scale-hidden'></div>" +
+                   "<div class='scale-show'></div>" +
+                  "</div>";
+        }
+        var scale = document.getElementsByClassName("clock-scale");
+            for(var i = 0; i < scale.length; i++) {
+                scale[i].style.transform="rotate(" + (i * 6 - 90) + "deg)";
+        }
+    }
+    initNumXY();//调用上面的函数
+    //获取时钟id
+    var hour_line = document.getElementById("hour_line"),
+        minute_line = document.getElementById("minute_line"),
+        second_line = document.getElementById("second_line"),
+        weather_info=document.getElementById("weather_info"),//获取天气
+        date_info=document.getElementById("date_info"),//获取date_info
+        hour_time = document.getElementById("hour_time"),// 获去时间id
+        minute_time = document.getElementById("minute_time"),
+        second_time = document.getElementById("second_time");
+        minute_ = document.getElementById("minute_");
+        second_ = document.getElementById("second_");
+
+    weather_info.innerHTML='<iframe width="200" scrolling="no" height="50" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=53&icon=1&site=12"></iframe>';
+    //3、设置动态时间
+    function setTime(){
+        var nowdate = new Date();
+        //获取年月日时分秒
+        var year = nowdate.getFullYear(),
+            month = nowdate.getMonth()+1,
+            date = nowdate.getDate(),
+            day = nowdate.getDay(),
+            hours = nowdate.getHours(),
+            minutes = nowdate.getMinutes(),
+            seconds = nowdate.getSeconds(),
+            date = nowdate.getDate();
+        var weekday =["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+        // 获取日期id
+        date_info.innerHTML=year+"年"+month+"月"+date+"日   "+weekday[day];
+        hour_time.innerHTML = hours >=10 ? hours : "0"+hours;
+        minute_time.innerHTML = minutes >=10 ? minutes : "0"+minutes;
+        second_time.innerHTML = seconds >=10 ? seconds : "0"+seconds;
+        minute_.innerHTML = ":";
+        second_.innerHTML = seconds % 2 == 0 ? ":" : " ";
+        console.log(year+"年"+month+"月"+date+"日   "+weekday[day]);
+        //时分秒针设置
+        var hour_rotate = (hours*30-90) + (Math.floor(minutes / 12) * 6);
+        hour_line.style.transform = 'rotate(' + hour_rotate + 'deg)';
+        minute_line.style.transform = 'rotate(' + (minutes*6 - 90) + 'deg)';
+        second_line.style.transform = 'rotate(' + (seconds*6 - 90)+'deg)';
+    }
+    // setTime();
+    setInterval(setTime, 1000);
+
+
+});
 </script>
