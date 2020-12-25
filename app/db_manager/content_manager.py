@@ -38,7 +38,10 @@ def get_article_by_title(title):
 
 
 def filter_article_order_by_id(desc=True):
-    return Article.objects.filter().order_by('-id' if desc else 'id')
+    """
+    优先排序号排序(类似置顶), 然后再用ID排序
+    """
+    return Article.objects.filter().order_by("-sorted_num", '-id' if desc else 'id')
 
 
 def all_article():
